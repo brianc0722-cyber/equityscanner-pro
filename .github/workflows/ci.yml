@@ -1,0 +1,35 @@
+name: CI
+
+on:
+  push:
+    branches: [ main, master ]
+  pull_request:
+    branches: [ main, master ]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+          pip install pytest pytest-asyncio
+      - name: Run tests
+        run: |
+          PYTHONPATH=. python -m pytest tests/ -v --tb=short
+      - name: Quick smoke test
+        run: |
+          PYTHONPATH=. python -c "
+          from premarket.speculation_engine import PreMarketSpeculationEngine
+          from utils.models import PreMarketFeatures
+          from datetime import datetime
+          f = PreMarketFeatures('TEST', 100, 101, 102, 99, 300000, 2000000, 2.1, 0.015, 0.01, 0.2, 0.3, datetime.utcnow())
+          p = PreMarketSpeculationEngine().predict(f)
+          print('Engine OK:', p.predicted_direction)
+          "

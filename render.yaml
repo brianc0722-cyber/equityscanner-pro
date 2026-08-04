@@ -1,0 +1,48 @@
+# Render Blueprint for EquityScanner Pro
+# This file allows you to deploy both services with one click.
+#
+# How to use:
+# 1. Push this file to your GitHub repo
+# 2. On Render: New + → Blueprint
+# 3. Connect your repo
+# 4. Render will create both services automatically
+
+services:
+  # === FastAPI Backend ===
+  - type: web
+    name: equityscanner-api
+    env: python
+    region: oregon
+    plan: free
+    buildCommand: pip install -r requirements.txt
+    startCommand: uvicorn api.main:app --host 0.0.0.0 --port $PORT
+    envVars:
+      - key: PYTHONPATH
+        value: .
+      # Add your real API keys here if needed:
+      # - key: ALPACA_API_KEY
+      #   sync: false
+      # - key: ALPACA_API_SECRET
+      #   sync: false
+
+  # === Streamlit Dashboard ===
+  - type: web
+    name: equityscanner-dashboard
+    env: python
+    region: oregon
+    plan: free
+    buildCommand: pip install -r requirements.txt
+    startCommand: streamlit run dashboard/app.py --server.port $PORT --server.address 0.0.0.0 --server.headless true
+    envVars:
+      - key: PYTHONPATH
+        value: .
+      # You can optionally point the dashboard to the API:
+      # - key: API_BASE_URL
+      #   value: https://equityscanner-api.onrender.com
+
+# Optional: Add Redis if you want to enable real Redis in the future
+# databases:
+#   - name: equityscanner-redis
+#     plan: free
+#     region: oregon
+#     ipAllowList: []

@@ -1,0 +1,5 @@
+streamlit>=1.38
+pandas
+numpy
+# The core package dependencies are listed in ../requirements.txt
+# For standalone demo mode only the above are needed.
