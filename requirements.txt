@@ -1,41 +1,25 @@
-# EquityScanner Pro - Core Dependencies
-# Production + Development
+# EquityScanner Pro - Render Deployment (Lightweight for free tier)
+# Heavy ML (torch + transformers) removed — causes builds to fail or timeout
+# Pre-market engine runs in statistical/demo mode using scikit-learn only
 
-# Web & API
 fastapi>=0.115
 uvicorn[standard]>=0.30
 streamlit>=1.38
 
-# CLI
 typer[all]>=0.12
 rich>=13.0
 
-# Async & Networking
 aiohttp>=3.10
 websockets>=12.0
-aiokafka>=0.11
 redis>=5.0
 
-# Data & ML
 pandas>=2.2
 numpy>=1.26
 scikit-learn>=1.5
 matplotlib>=3.9
 
-# NLP (FinBERT)
-transformers>=4.40
-torch>=2.3
-
-# Observability
 prometheus-client>=0.20
 
-# Utilities
 python-dotenv>=1.0
 pydantic>=2.8
 pydantic-settings>=2.4
-
-# Testing (dev)
-# pytest>=8.0
-# pytest-asyncio>=0.23
-# black
-# ruff
